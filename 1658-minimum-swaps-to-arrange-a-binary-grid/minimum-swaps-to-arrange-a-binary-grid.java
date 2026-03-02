@@ -2,40 +2,35 @@ class Solution
 {
     public int minSwaps(int[][] grid) 
     {
-        int n=grid.length;
-        int[] trailing=new int[n];
-        for(int i=0;i<n;i++)
+        ArrayList<Integer> matrix=new ArrayList<>();
+        int n=grid.length-1;
+        for(int[] rowArr:grid)
         {
-            int count=0;
-            for(int j=n-1;j>=0;j--)
+            int i;
+            for(i=n;i>=0;i--)
             {
-                if(grid[i][j]==0)
-                   count++;
-                else
+                if(rowArr[i]==1)
                    break;
             }
-            trailing[i]=count;
+            matrix.add(n-i);
         }
-        int swaps=0;
-        for(int i=0;i<n;i++)
+        int swap=0;
+        while(!matrix.isEmpty())
         {
-            int required=n-1-i;
-            int j=i;
-            while(j<n&&trailing[j]<required)
+            int i;
+            int row=0;
+            for(i=0;i<matrix.size();i++)
             {
-                j++;
+                row=matrix.get(i);
+                if(row>=n)
+                   break;
             }
-            if(j==n)
+            if(row<n)
                return -1;
-            while(j>i)
-            {
-                int temp=trailing[j];
-                trailing[j]=trailing[j-1];
-                trailing[j-1]=temp;
-                swaps++;
-                j--;
-            }
+            swap+=i;
+            matrix.remove(i);
+            n--;
         }
-        return swaps;
+        return swap;
     }
 }
